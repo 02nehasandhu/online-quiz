@@ -14,3 +14,4 @@ This repository contains a simple HTML/JavaScript quiz app.
 
 ## GitHub
 Repo: https://github.com/02nehasandhu/online-quiz
+
