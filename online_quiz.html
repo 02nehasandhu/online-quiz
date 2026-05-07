@@ -32,6 +32,10 @@
   <div id="summary" style="display: none;">
     <h3 id="summary-title"></h3>
     <p id="summary-text"></p>
+    <div id="leaderboard">
+      <h4>Top Scores</h4>
+      <ol id="top-scores"></ol>
+    </div>
     <button onclick="restartQuiz()">Restart Quiz</button>
   </div>
 
@@ -116,6 +120,7 @@
     let currentQuestionIndex = 0;
     let score = 0;
     let answered = false;
+    let leaderboard = JSON.parse(localStorage.getItem('quizLeaderboard')) || [];
     let timeLeft = 15;
     let timerId = null;
 
@@ -229,13 +234,21 @@
       const percentage = Math.round((score / quiz.length) * 100);
       document.getElementById("summary-text").textContent = `Your score is ${score} out of ${quiz.length}. You answered ${percentage}% correctly.`;
     }
+updateLeaderboard(newScore) {
+      leaderboard.push(newScore);
+      leaderboard.sort((a, b) => b - a);
+      leaderboard = leaderboard.slice(0, 5); // Keep top 5
+      localStorage.setItem('quizLeaderboard', JSON.stringify(leaderboard));
+    }
 
-    function restartQuiz() {
-      currentQuestionIndex = 0;
-      score = 0;
-      answered = false;
-      shuffle(quiz);
-      document.getElementById("summary").style.display = "none";
+    function displayLeaderboard() {
+      const list = document.getElementById("top-scores");
+      list.innerHTML = "";
+      leaderboard.forEach((score, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${index + 1}. ${score}`;
+        list.appendChild(li);
+      }mentById("summary").style.display = "none";
       renderQuestion();
     }
 
