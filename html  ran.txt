@@ -1,0 +1,19 @@
+<!DOCKTYPE html>
+<html>
+<head>
+<title>omline quiz</title>
+</head>
+<body>
+
+<h2>simple quiz</h2>
+
+<form action=''result.php
+"method=''post''>
+<p>1. what does HTML stand for?
+</p>
+<input type=''radio''name=''q1''
+value=''a''>hyper Text Markup
+Language<br>
+input type=''radio''name=''q1''
+value=''a''>Hyper text Markup
+Languageanguage

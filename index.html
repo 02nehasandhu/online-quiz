@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Online Quiz</title>
+</head>
+<body>
+  <h2>HTML Quiz</h2>
+  <p>What does HTML stand for?</p>
+  <button onclick="check('a')">Hyper Text Markup Language</button>
+  <button onclick="check('b')">High Text Machine Language</button>
+  <p id="result"></p>
+
+  <script>
+    function check(answer) {
+      const result = document.getElementById("result");
+      if (answer === 'a') {
+        result.innerHTML = "Correct answer!";
+      } else {
+        result.innerHTML = "Wrong answer!";
+      }
+    }
+  </script>
+</body>
+</html>

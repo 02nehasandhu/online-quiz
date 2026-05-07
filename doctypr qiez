@@ -1,0 +1,51 @@
+ <!DOCTYPE  html>
+ <html>
+<head>
+    <title>Online quiz </title>
+</head>
+<body>
+    <h2>simple quiz </h2>/h2.
+<form id="quizForm">
+    <p><1.What is the capital of India?
+        <p/>
+        <input type="radio"name="q1"
+        Value="a""Mumbai<br>
+        <input type ="radio"name="q1"
+        Value ="b"delhi<br>
+        <input type="=radio"name=q1"
+        Value ="c">kolkata<br>
+            
+<p>2.2+2=?</p>
+<input type="radio"name="q2"
+Value="a">3<br
+<input>type="radio"name="q2"
+Value="b">4<br>
+<input type ="radio"name="q2"
+Value ="c">5<br>
+
+<br> 
+<button type="buttom"
+onclick=""checkAnnswer()">Submit</button>
+    </from>
+     
+    <h3 id ="result"></h3>
+
+    <script>
+        function checkAnswer(){
+        let  score=0;
+        
+        let ql=document.querySelector('i      
+    nput[name="ql"]:checkrd');
+  let q2=document.queryselector(i nput[name='q2']checked,);
+  
+  if(q1&&q1.value==='b') score++;
+  if(q2&&q2.value==='b')score++;
+  document.getElementBYLD(''result.).inner Text='Your score:''+
+  score;
+        }
+        </script>
+        </p><body>
+        </html>
+
+
+

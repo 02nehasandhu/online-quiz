@@ -1,0 +1,17 @@
+# Ignore editor settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak
+
+# Node modules if used later
+node_modules/
+
+dist/
+build/

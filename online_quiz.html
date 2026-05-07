@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Online Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; line-height: 1.5; }
+    #quiz-container { border: 1px solid #ddd; border-radius: 10px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+    #quiz-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-weight: 600; gap: 10px; flex-wrap: wrap; }
+    #timer { color: #222; }
+    #question { margin-top: 0; }
+    .option-button { display: block; width: 100%; margin: 8px 0; padding: 12px 14px; font-size: 16px; cursor: pointer; border: 1px solid #888; border-radius: 6px; background: #f7f7f7; }
+    .option-button:hover:not(:disabled) { background: #e9f5ff; }
+    .option-button:disabled { background: #f0f0f0; color: #888; cursor: default; }
+    #result { min-height: 24px; margin-top: 14px; font-weight: 600; }
+    #next-btn { margin-top: 18px; padding: 10px 16px; font-size: 16px; border-radius: 6px; border: none; cursor: pointer; background: #007bff; color: white; }
+    #next-btn:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <h2>HTML Quiz</h2>
+  <div id="quiz-container">
+    <div id="quiz-info">
+      <span id="score">Score: 0</span>
+      <span id="progress">Question 1 / 3</span>
+      <span id="timer">Time: 15s</span>
+    </div>
+    <h3 id="question"></h3>
+    <div id="options"></div>
+    <p id="result"></p>
+    <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+  </div>
+  <div id="summary" style="display: none;">
+    <h3 id="summary-title"></h3>
+    <p id="summary-text"></p>
+    <button onclick="restartQuiz()">Restart Quiz</button>
+  </div>
+
+  <script>
+    const quiz = [
+      {
+        question: "What does HTML stand for?",
+        options: [
+          "Hyper Text Markup Language",
+          "High Text Machine Language",
+          "Hyperlink and Text Markup Language"
+        ],
+        answer: 0
+      },
+      {
+        question: "Which tag defines a paragraph?",
+        options: ["<p>", "<div>", "<span>"],
+        answer: 0
+      },
+      {
+        question: "Which HTML element is used to create a link?",
+        options: ["<a>", "<link>", "<button>"],
+        answer: 0
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let answered = false;
+    let timeLeft = 15;
+    let timerId = null;
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function startTimer() {
+      clearInterval(timerId);
+      timeLeft = 15;
+      document.getElementById("timer").textContent = `Time: ${timeLeft}s`;
+      timerId = setInterval(() => {
+        timeLeft -= 1;
+        document.getElementById("timer").textContent = `Time: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timerId);
+          timeUp();
+        }
+      }, 1000);
+    }
+
+    function timeUp() {
+      if (answered) return;
+      answered = true;
+      const result = document.getElementById("result");
+      const correctIndex = quiz[currentQuestionIndex].answer;
+      result.textContent = `Time's up! The correct answer is: ${quiz[currentQuestionIndex].options[correctIndex]}`;
+      disableOptions(true);
+    }
+
+    function renderQuestion() {
+      document.getElementById("summary").style.display = "none";
+      document.getElementById("quiz-container").style.display = "block";
+
+      const current = quiz[currentQuestionIndex];
+      document.getElementById("question").textContent = current.question;
+      document.getElementById("score").textContent = `Score: ${score}`;
+      document.getElementById("progress").textContent = `Question ${currentQuestionIndex + 1} / ${quiz.length}`;
+
+      const nextButton = document.getElementById("next-btn");
+      nextButton.textContent = currentQuestionIndex === quiz.length - 1 ? "Finish" : "Next Question";
+
+      const optionsContainer = document.getElementById("options");
+      optionsContainer.innerHTML = "";
+
+      current.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.className = "option-button";
+        button.onclick = () => checkAnswer(index);
+        optionsContainer.appendChild(button);
+      });
+
+      document.getElementById("result").textContent = "";
+      answered = false;
+      startTimer();
+    }
+
+    function checkAnswer(selectedIndex) {
+      if (answered) return;
+      answered = true;
+      clearInterval(timerId);
+
+      const result = document.getElementById("result");
+      const correctIndex = quiz[currentQuestionIndex].answer;
+      const isCorrect = selectedIndex === correctIndex;
+
+      if (isCorrect) {
+        score += 1;
+        result.textContent = "Correct answer!";
+      } else {
+        result.textContent = `Wrong answer! The correct answer is: ${quiz[currentQuestionIndex].options[correctIndex]}`;
+      }
+
+      disableOptions(true);
+      document.getElementById("score").textContent = `Score: ${score}`;
+    }
+
+    function disableOptions(disabled) {
+      document.querySelectorAll(".option-button").forEach(button => {
+        button.disabled = disabled;
+      });
+    }
+
+    function nextQuestion() {
+      clearInterval(timerId);
+      if (currentQuestionIndex === quiz.length - 1) {
+        showSummary();
+      } else {
+        currentQuestionIndex += 1;
+        renderQuestion();
+      }
+    }
+
+    function showSummary() {
+      clearInterval(timerId);
+      document.getElementById("quiz-container").style.display = "none";
+      document.getElementById("summary").style.display = "block";
+      document.getElementById("summary-title").textContent = "Quiz Completed!";
+      const percentage = Math.round((score / quiz.length) * 100);
+      document.getElementById("summary-text").textContent = `Your score is ${score} out of ${quiz.length}. You answered ${percentage}% correctly.`;
+    }
+
+    function restartQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      answered = false;
+      shuffle(quiz);
+      document.getElementById("summary").style.display = "none";
+      renderQuestion();
+    }
+
+    shuffle(quiz);
+    renderQuestion();
+  </script>
+</body>
+</html>
