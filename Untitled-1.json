@@ -1,0 +1,5 @@
+{
+  "question": "What is HTML?",
+  "options": ["Programming Language", "Markup Language", "Database", "OS"],
+  "answer": "Markup Language"
+}

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Quiz App</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Quiz</title>
 </head>
 <body>
-  <h1>Welcome to Quiz App</h1>
-  <a href="quiz.html">Start Quiz</a>
+
+<h2>Quiz</h2>
+<div id="quiz"></div>
+<button onclick="submitQuiz()">Submit</button>
+
+<script src="script.js"></script>
 </body>
 </html>
